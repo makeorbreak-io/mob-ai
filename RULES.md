@@ -60,4 +60,4 @@ also means that perpendicular shots will behave differently at their
 intersection, depending on the distance from the shooters to that point.
 
 The simplest version of this game would be in a 2-player setting, but it
-supports up to N\*M players.
+supports up to N\*M players (it might be a bit crowded, though).
