@@ -1,7 +1,7 @@
-= AI Competition =
+# AI Competition
 
 
-== Setting ==
+## Setting
 
 The game is composed of a 2D Board, of N x M squares. Each player has an
 avatar, located at one of the squares. Squares cannot be occupied by multiple
@@ -10,12 +10,11 @@ player.
 
 In a turn based fashion, players can do one of two actions:
 
-  * Move in any direction, causing the target square to be painted in their
-    color
-  * Shoot paint in any direction, in a straight line whose length is at least one,
-    or the length of the contiguous line of squares painted in their color in
-    the opposite direction. The shot may be blocked by other players standing
-    in the way or other players' shots.
+* Move in any direction, causing the target square to be painted in their color
+* Shoot paint in any direction, in a straight line whose length is at least
+  one, or the length of the contiguous line of squares painted in their color
+  in the opposite direction. The shot may be blocked by other players standing
+  in the way or other players' shots.
 
 Cardinal and ordinal directions are considered valid.
 
@@ -24,7 +23,7 @@ of squares painted their color. Players with the same number of painted squares
 receive the same rank.
 
 
-== Variants ==
+## Variants
 
 These variants are easily implemented, and can add an extra level of difficulty
 to the challenge:
@@ -32,7 +31,7 @@ to the challenge:
 * Obstacles placed at squares, making them unpaintable and unoccupiable by avatars.
 
 
-== Turn based action resolution ==
+## Turn based action resolution
 
 Player actions must be resolved in a way that avoids first player advantage,
 while still resolving ambiguities. The action resolving algorithm is as
