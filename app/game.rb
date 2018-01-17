@@ -1,10 +1,11 @@
-class Game < Struct.new(:width, :height, :player_positions, :colors)
+class Game < Struct.new(:width, :height, :player_positions, :colors, :turns)
   def self.initial_state width, height, player_initial_positions
     Game.new(
       width,
       height,
       player_initial_positions.each_with_index.to_h.invert,
       player_initial_positions.each_with_index.to_h,
+      width * height * 2,
     )
   end
 
@@ -15,10 +16,14 @@ class Game < Struct.new(:width, :height, :player_positions, :colors)
       transform_values(&:length)
   end
 
+  def finished?
+    turns == 0
+  end
+
   def apply_moves actions
     moves = actions.
       each_with_index.
-      select { |action, player| action[0] == :move }.
+      select { |action, player| action&.[](0) == "move" }.
       map { |action, player| [player, self.class.add_positions(player_positions[player], action[1])] }.
       select { |player, position| valid_board_position(position) }
 
@@ -34,7 +39,7 @@ class Game < Struct.new(:width, :height, :player_positions, :colors)
 
     next_colors = colors.merge(next_positions.invert)
 
-    Game.new(width, height, next_positions, next_colors)
+    Game.new(width, height, next_positions, next_colors, turns)
   end
 
   Shot = Struct.new(:player, :position, :direction, :range) do
@@ -55,7 +60,7 @@ class Game < Struct.new(:width, :height, :player_positions, :colors)
   def apply_shots actions
     shots = actions.
       each_with_index.
-      select { |action, i| action[0] == :shoot }.
+      select { |action, i| action&.[](0) == "shoot" }.
       map { |action, i| Shot.new(i, player_positions[i], action[1], shot_range(i, action[1])) }
 
     next_colors = colors
@@ -80,12 +85,17 @@ class Game < Struct.new(:width, :height, :player_positions, :colors)
       shots = shots.select(&:active?)
     end
 
-    Game.new(width, height, player_positions, next_colors)
+    Game.new(width, height, player_positions, next_colors, turns)
+  end
+
+  def advance_turn
+    Game.new(width, height, player_positions, colors, turns - 1)
   end
 
   def apply_actions actions
     apply_moves(actions).
-      apply_shots(actions)
+      apply_shots(actions).
+      advance_turn
   end
 
   def shot_range player, direction

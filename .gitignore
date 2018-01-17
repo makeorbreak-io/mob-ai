@@ -1,0 +1,2 @@
+builders/user_content/*
+!builders/user_content/.keep
