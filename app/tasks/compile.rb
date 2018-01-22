@@ -1,7 +1,14 @@
+require "fileutils"
+
 module Tasks
   class Compile < Struct.new(:job)
     def run
-      `docker build -f builders/ruby/Dockerfile builders/ -t robot-#{job["program_id"]} --network none`
+      FileUtils.rm_rf Dir.glob("builders/user_content/*")
+      File.write("builders/user_content/player.rb", job["source_code"])
+
+      `docker build -f builders/#{job["sdk"]}/Dockerfile builders/ -t robot-#{job["program_id"]} --network none`
+
+      FileUtils.rm_rf Dir.glob("builders/user_content/*")
 
       # docker push
 
