@@ -1,0 +1,2 @@
+worker: bundle exec ruby -Iapp run.rb
+web: bundle exec ruby -Iapp web.rb
