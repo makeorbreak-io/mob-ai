@@ -2,7 +2,7 @@ require 'tasks/compile'
 require 'tasks/compete'
 
 class Worker < Struct.new(:database, :worker_id)
-  def task type
+  def self.task type
     {
       "compile" => Tasks::Compile,
       "compete" => Tasks::Compete,

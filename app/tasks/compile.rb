@@ -7,5 +7,13 @@ module Tasks
 
       { "docker_image": "robot-#{job["program_id"]}" }
     end
+
+    def self.valid? params
+      [
+        params["sdk"] == "ruby",
+        params["program_id"].match?(/\A[\w-]+\z/),
+        params["source_code"].match?(/\A.+\z/),
+      ].tap { |conditions| puts conditions }.all?
+    end
   end
 end

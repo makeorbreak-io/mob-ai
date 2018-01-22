@@ -37,6 +37,11 @@ module Tasks
 
       board.score
     end
+
+    def self.valid? params
+      [
+        params["program_ids"].all? { |program_id| program_id.match?(/\A[\w-]+\z/) },
+      ].all?
+    end
   end
 end
-
