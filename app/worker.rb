@@ -14,12 +14,12 @@ class Worker < Struct.new(:database, :worker_id)
       update_job(job, status: "processing")
 
       begin
-        result = task(job[:type]).new(JSON.parse(job[:payload])).run
-      rescue
+        result = self.class.task(job[:type]).new(JSON.parse(job[:payload])).run
+        update_job(job, status: "processed", result: JSON.generate(result))
+      rescue => e
+        puts e
         update_job(job, status: "error")
       end
-
-      update_job(job, status: "processed", result: JSON.generate(result))
     end
   end
 
