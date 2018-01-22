@@ -33,7 +33,7 @@ module Tasks
       puts board.score
 
       # this is not working
-      pids.each { |pid| Process.kill("SIGKILL", pid) }
+      pids.each { |pid| Process.kill("SIGTERM", pid) }
 
       board.score
     end
