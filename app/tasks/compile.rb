@@ -1,7 +1,7 @@
 module Tasks
   class Compile < Struct.new(:job)
     def run
-      `docker build -f builders/ruby/Dockerfile builders/ -t robot-#{job["program_id"]} --network no-egress`
+      `docker build -f builders/ruby/Dockerfile builders/ -t robot-#{job["program_id"]} --network none`
 
       # docker push
 
