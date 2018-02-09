@@ -9,6 +9,20 @@ database = Sequel.connect(
   loggers: [Logger.new($stderr)]
 )
 
+def serialize job
+  {
+    id: job[:id],
+    type: job[:type],
+    status: job[:status],
+    result: JSON.parse(job[:result] || "null"),
+    updated_at: job[:updated_at]&.to_s,
+  }
+end
+
+before do
+  content_type 'application/json'
+end
+
 post "/jobs" do
   type, payload = JSON.parse(request.body.read).values_at("type", "payload")
 
