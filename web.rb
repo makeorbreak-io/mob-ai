@@ -10,13 +10,30 @@ database = Sequel.connect(
 )
 
 post "/jobs" do
-  params = JSON.parse(request.body.read)
+  type, payload = JSON.parse(request.body.read).values_at("type", "payload")
 
-  raise unless Worker.task(params["type"]).valid?(params["payload"])
+  if TaskRunner.task(type).valid?(payload)
+    database[:jobs]
+      .returning(:id)
+      .insert(type: type, payload: JSON.generate(payload), status: "new")
+      .first.to_json
+  else
+    400
+  end
+end
 
-  database[:jobs].insert(
-    type: params["type"],
-    payload: JSON.generate(params["payload"]),
-    status: "new",
-  )
+get "/jobs/:id" do
+  serialize(database[:jobs].where(id: params[:id]).first).to_json
+end
+
+delete "/jobs/:id" do
+  database[:jobs]
+    .where(status: "new", id: params[:id])
+    .update(status: "cancelled")
+
+  204
+end
+
+get "/jobs" do
+  database[:jobs].all.map { |job| serialize job }.to_json
 end
