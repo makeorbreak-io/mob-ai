@@ -2,10 +2,10 @@ require "sinatra"
 require "sequel"
 require "logger"
 
-require "worker"
+require "task_runner"
 
 database = Sequel.connect(
-  ENV.fetch("DATABASE_URL", "postgres://localhost/mob-ai"),
+  ENV.fetch("DATABASE_URL"),
   loggers: [Logger.new($stderr)]
 )
 

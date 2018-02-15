@@ -1,0 +1,29 @@
+{
+  "board": {
+    "width": 2,
+    "height": 1,
+    "turns_left": 1,
+    "player_positions": {
+      "alice": [0, 0],
+      "bob": [1, 1]
+    },
+    "colors": [
+      ["alice", "bob"]
+    ]
+  },
+
+  "actions": {},
+
+  "expected": {
+    "width": 2,
+    "height": 1,
+    "turns_left": 0,
+    "player_positions": {
+      "alice": [0, 0],
+      "bob": [1, 1]
+    },
+    "colors": [
+      ["alice", "bob"]
+    ]
+  }
+}

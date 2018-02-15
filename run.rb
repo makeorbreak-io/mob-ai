@@ -1,12 +1,12 @@
 require "sequel"
 require "logger"
 
-require "worker"
+require "task_runner"
 
 worker_id = ENV.fetch("WORKER_ID", "me")
 database = Sequel.connect(
-  ENV.fetch("DATABASE_URL", "postgres://localhost/mob-ai"),
+  ENV.fetch("DATABASE_URL"),
   loggers: [Logger.new($stderr)]
 )
 
-Worker.new(database, worker_id).run
+TaskRunner.new(database, worker_id).run

@@ -1,0 +1,2 @@
+module Multipaint
+end

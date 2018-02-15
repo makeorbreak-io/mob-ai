@@ -2,9 +2,9 @@
 
 require "json"
 
-require "printers/color"
-require "game"
-require "runner"
+require "game/printers/color"
+require "game/engine"
+require "game/runner"
 require "remote_player"
 require "remote_player_server"
 
@@ -30,40 +30,11 @@ player_b = Player.new [
   [:shoot, [-1, -1]],
 ]
 
-board = Game.initial_state 5, 5, [[0, 0], [4, 4]]
-board = Runner.new(board, [player_a, player_b]).play_out
+board = Game::Engine.initial_state 5, 5, [[0, 0], [4, 4]]
+board = Game::Runner.new(board, [player_a, player_b]).play_out
 
-puts Printers::Color.new(board).to_s
+puts Game::Printers::Color.new(board).to_s
 puts board.score
-
-#
-#
-#puts "-------------"
-#
-#board = Game.new(
-#  9, 9,
-#  {
-#    0 => [2, 2],
-#    1 => [2, 5],
-#    2 => [4, 3],
-#  },
-#  {
-#    [2, 0] => 0,
-#    [2, 1] => 0,
-#    [2, 2] => 0,
-#    [2, 5] => 1,
-#    [2, 6] => 1,
-#    [2, 7] => 1,
-#    [2, 8] => 1,
-#    [4, 3] => 2,
-#    [5, 3] => 2,
-#    [6, 3] => 2,
-#    [7, 3] => 2,
-#    [8, 3] => 2,
-#  },
-#  1,
-#)
-#
 
 ports = [3333, 3334]
 servers = ports.map { |port| RemotePlayerServer.run_in_port(port) }
@@ -72,11 +43,11 @@ players = ports.each_with_index.map { |port, id| RemotePlayer.new("http://localh
 
 puts players.map(&:healthy?)
 
-board = Game.initial_state 10, 10, [[0, 0], [9, 9]]
+board = Game::Engine.initial_state 10, 10, [[0, 0], [9, 9]]
 board.turns = 5
-board = Runner.new(board, players).play_out
+board = Game::Runner.new(board, players).play_out
 
-puts Printers::Color.new(board).to_s
+puts Game::Printers::Color.new(board).to_s
 puts board.score
 
 
