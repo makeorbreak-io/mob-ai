@@ -1,8 +1,7 @@
 require "parallel"
-require "byebug"
 
-module Game
-  class Runner < Struct.new(:game_state, :players)
+module Multipaint
+  class Stepper < Struct.new(:game_state, :players)
     class UnresponsivePlayers < StandardError
       attr_reader :players
       def initialize players
@@ -11,7 +10,7 @@ module Game
     end
 
     def play_out
-      unresponsive_players = Parallel.map(players, in_threads: players.size) do |player|
+      unresponsive_players = Parallel.map(players, in_threads: 0) do |player|
         player.start
         nil
       rescue => e
@@ -39,7 +38,7 @@ module Game
     end
 
     def actions
-      Parallel.map(players, in_threads: players.size) do |player|
+      Parallel.map(players, in_threads: 0) do |player|
         player.next_move(game_state)
       rescue => e
         $stderr.puts e, e.backtrace

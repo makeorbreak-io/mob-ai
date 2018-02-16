@@ -1,31 +1,24 @@
 require "multipaint/position"
 
 module Multipaint
-  class GameState < Struct.new(:width, :height, :player_positions, :colors, :turns)
-    def self.initial_state width, height, player_initial_positions, turns = width * height
-      player_initial_positions = player_initial_positions
-        .map { |position| Position.new(position[0], position[1]) }
-        .each_with_index
-        .to_h
-
-      new(
-        width,
-        height,
-        player_initial_positions.invert,
-        player_initial_positions,
-        turns,
-      )
-    end
-
+  class GameState < Struct.new(
+    :width,
+    :height,
+    :player_positions,
+    :colors,
+    :turns_left,
+    :previous_actions,
+  )
     def score
       colors.
         values.
+        compact.
         group_by(&:itself).
         transform_values(&:length)
     end
 
     def finished?
-      turns == 0
+      turns_left.zero?
     end
 
     def apply_walks actions
@@ -46,7 +39,7 @@ module Multipaint
 
       next_colors = colors.merge(next_positions.invert)
 
-      self.class.new(width, height, next_positions, next_colors, turns)
+      self.class.new(width, height, next_positions, next_colors, turns_left, previous_actions)
     end
 
     Shot = Struct.new(:player, :position, :direction, :range) do
@@ -65,10 +58,14 @@ module Multipaint
     end
 
     def apply_shots actions
-      shots = actions.
-        each_with_index.
-        select { |action, i| action&.[](0) == "shoot" }.
-        map { |action, i| Shot.new(i, player_positions[i], action[1], shot_range(i, action[1])) }
+      shots = actions.map do |action|
+        Shot.new(
+          action.player_id,
+          player_positions[action.player_id],
+          action.direction,
+          shot_range(action.player_id, action.direction),
+        )
+      end
 
       next_colors = colors
       painted_this_turn = []
@@ -92,17 +89,24 @@ module Multipaint
         shots = shots.select(&:active?)
       end
 
-      self.class.new(width, height, player_positions, next_colors, turns)
+      self.class.new(width, height, player_positions, next_colors, turns_left, previous_actions)
     end
 
-    def advance_turn
-      self.class.new(width, height, player_positions, colors, turns - 1)
+    def advance_turn actions
+      self.class.new(
+        width,
+        height,
+        player_positions,
+        colors,
+        turns_left - 1,
+        previous_actions + [actions],
+      )
     end
 
     def apply_actions actions
       apply_walks(actions.select(&:walk?)).
         apply_shots(actions.select(&:shoot?)).
-        advance_turn
+        advance_turn(actions)
     end
 
     def shot_range player, direction

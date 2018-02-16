@@ -1,8 +1,7 @@
-require "game/runner"
 require "multipaint/game_state_serializer"
-
-require "players/timeout"
-require "players/docker"
+require "multipaint/players/timeout"
+require "multipaint/players/docker"
+require "multipaint/stepper"
 
 class Enumerator
   def last
@@ -17,10 +16,10 @@ module Tasks
       program_ids = initial_game_state.player_positions.keys
 
       with_players(program_ids) do |players|
-        Multipaint::GameStateSerializer.dump(Game::Runner.new(initial_game_state, players).play_out.last)
+        Multipaint::GameStateSerializer.dump(Multipaint::Stepper.new(initial_game_state, players).play_out.last)
       end
 
-    rescue Game::Runner::UnresponsivePlayers => e
+    rescue Multipaint::Stepper::UnresponsivePlayers => e
       { error: "unresponsive_players", players: e.players.map(&:player_id) }
     end
 
@@ -37,7 +36,7 @@ module Tasks
 
       begin
         players = player_ids.map do |player_id|
-          Players::Timeout.new(Players::Docker.new(player_id))
+          Multipaint::Players::Timeout.new(Multipaint::Players::Docker.new(player_id))
         end
 
         yield players

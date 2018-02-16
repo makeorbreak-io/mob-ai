@@ -7,7 +7,8 @@ module Tasks
       sdk, program_id, source_code = params.values_at("sdk", "program_id", "source_code")
 
       Dir.mktmpdir("robot-#{program_id}-") do |tmpdir|
-        FileUtils.cp_r(File.join("builders", sdk, "."), tmpdir)
+        FileUtils.cp_r(File.join("builders", sdk, "Dockerfile"), tmpdir)
+        FileUtils.cp_r(File.join("engines", sdk, "."), File.join(tmpdir, "engine"))
         File.write(File.join(tmpdir, "source_code"), source_code)
 
         `docker build #{tmpdir} -t robot-#{program_id} --network none`

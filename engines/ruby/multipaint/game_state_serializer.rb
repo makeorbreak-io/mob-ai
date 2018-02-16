@@ -1,3 +1,4 @@
+require "multipaint/action_serializer"
 require "multipaint/game_state"
 require "multipaint/position"
 
@@ -10,12 +11,17 @@ module Multipaint
         payload
         .fetch("player_positions")
         .transform_values { |position| Position.from_list(position) },
-      payload
-        .fetch("colors")
-        .each_with_index
-        .flat_map { |row, y| row.each_with_index.map { |c, x| [Position.new(y, x), c] } }
-        .to_h,
-      Integer(payload.fetch("turns_left")),
+        payload
+          .fetch("colors")
+          .each_with_index
+          .flat_map { |row, y| row.each_with_index.map { |c, x| [Position.new(y, x), c] } }
+          .to_h,
+        Integer(payload.fetch("turns_left")),
+        payload.fetch("previous_actions").map do |actions|
+          actions.map do |player_id, action|
+            PlayerAction.new(player_id, ActionSerializer.load(action))
+          end
+        end,
       )
     end
 
@@ -27,7 +33,12 @@ module Multipaint
           [position.i, position.j]
         end,
         colors: engine.height.times.map { |y| engine.width.times.map { |x| engine.colors[Position.new(y, x)] } },
-        turns_left: engine.turns,
+        previous_actions: engine.previous_actions.map do |player_actions|
+          player_actions.map do |player_action|
+            [player_action.player_id, ActionSerializer.dump(player_action)]
+          end.to_h
+        end,
+        turns_left: engine.turns_left,
       }
     end
   end

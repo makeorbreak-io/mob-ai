@@ -1,2 +1,2 @@
 ruby:
-	./runner.sh ruby -I../ruby ../ruby/runner.rb
+	./runner.sh ruby -I../ruby "../ruby/multipaint/test/transition.rb"
