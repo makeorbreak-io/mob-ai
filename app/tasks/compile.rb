@@ -1,26 +1,33 @@
 require "fileutils"
+require "tmpdir"
 
 module Tasks
-  class Compile < Struct.new(:job)
+  class Compile < Struct.new(:params)
     def run
-      FileUtils.rm_rf Dir.glob("builders/user_content/*")
+      sdk, program_id, source_code = params.values_at("sdk", "program_id", "source_code")
 
-      # TODO: remove .rb reference
-      File.write("builders/user_content/player.rb", job["source_code"])
+      Dir.mktmpdir("robot-#{program_id}-") do |tmpdir|
+        FileUtils.cp_r(File.join("builders", sdk, "."), tmpdir)
+        File.write(File.join(tmpdir, "source_code"), source_code)
 
-      `docker build -f builders/#{job["sdk"]}/Dockerfile builders/ -t robot-#{job["program_id"]} --network none`
+        `docker build #{tmpdir} -t robot-#{program_id} --network none`
 
-      FileUtils.rm_rf Dir.glob("builders/user_content/*")
-
-      { "docker_image": "robot-#{job["program_id"]}" }
+        { "docker_image": "robot-#{program_id}" }
+      end
     end
 
-    def self.valid? params
-      [
-        params["sdk"] == "ruby",
-        params["program_id"]&.match?(/\A[\w-]+\z/),
-        params["source_code"]&.match?(/\A.+\z/),
-      ].all?
+    class << self
+      def builders
+        @builders ||= Dir["builders/*"].map { |x| x.split("/").last }
+      end
+
+      def valid? params
+        [
+          builders.include?(params["sdk"]),
+          /\A[\w-]+\z/.match?(params["program_id"]),
+          /\A.+\z/.match?(params["source_code"]),
+        ].all?
+      end
     end
   end
 end

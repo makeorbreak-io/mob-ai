@@ -1,7 +1,7 @@
 FROM mob-ai-ruby:latest
 
 RUN mkdir /robot/
-ADD ruby/remote_player_server.rb /robot/
-ADD user_content/* /robot/
+ADD remote_player_server.rb /robot/
+ADD source_code /robot/player.rb
 
 ENTRYPOINT ["ruby", "robot/remote_player_server.rb", "-o", "0.0.0.0"]

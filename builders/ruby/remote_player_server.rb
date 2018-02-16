@@ -1,15 +1,14 @@
-require "sinatra"
-require "puma"
+require "json"
+
 require_relative "./player.rb"
 
-player = Player.new
+$stdin.sync = true
+$stdout.sync = true
 
-post "/play" do
-  board = JSON.parse(request.body.read)
+player = Player.new(JSON.parse($stdin.readline))
 
-  JSON.generate(player.play(board, params[:player_id].to_i))
-end
+$stdout.puts JSON.dump(ready: true)
 
-get "/healthy" do
-  "yes"
+loop do
+  $stdout.puts JSON.generate(player.play(JSON.parse($stdin.readline)))
 end
