@@ -21,6 +21,8 @@ end
 
 before do
   content_type 'application/json'
+
+  halt 403 unless /Bearer .*/.match(headers["Authorization"])&.[](1) == ENV.fetch("AUTHORIZATION_TOKEN")
 end
 
 post "/jobs" do
