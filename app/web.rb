@@ -20,18 +20,24 @@ def serialize job
 end
 
 before do
-  content_type 'application/json'
+  halt 403 unless /Bearer (.*)/.match(request.env["HTTP_AUTHORIZATION"])&.[](1) == ENV.fetch("AUTHORIZATION_TOKEN")
 
-  halt 403 unless /Bearer .*/.match(headers["Authorization"])&.[](1) == ENV.fetch("AUTHORIZATION_TOKEN")
+  content_type 'application/json'
 end
 
 post "/jobs" do
-  type, payload = JSON.parse(request.body.read).values_at("type", "payload")
+  type, payload, callback_url, auth_token = JSON.parse(request.body.read).values_at("type", "payload", "callback_url", "auth_token")
 
   if TaskRunner.task(type).valid?(payload)
     database[:jobs]
       .returning(:id)
-      .insert(type: type, payload: JSON.generate(payload), status: "new")
+      .insert(
+        type: type,
+        payload: JSON.generate(payload),
+        status: "new",
+        callback_url: callback_url,
+        auth_token: auth_token,
+      )
       .first.to_json
   else
     400

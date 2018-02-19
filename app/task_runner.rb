@@ -1,3 +1,4 @@
+require 'net/http'
 require 'tasks/compile'
 require 'tasks/compete'
 
@@ -45,6 +46,16 @@ class TaskRunner < Struct.new(:database, :worker_id)
     jobs.where(id: job[:id]).update(params.merge(updated_at: Time.now))
 
     # POST callback with status & results
+      updated_job = jobs.where(id: job[:id]).first
+
+      Net::HTTP.post(
+        URI(updated_job[:callback_url]),
+        JSON.generate(
+          status: updated_job[:status],
+          result: updated_job[:result],
+        ),
+        updated_job[:auth_token]&.yield_self { |token| { Authorization: "Bearer #{token}" } },
+      )
   end
 
   def reserve_job

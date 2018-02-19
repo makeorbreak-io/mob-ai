@@ -1,0 +1,2 @@
+ALTER TABLE jobs ADD COLUMN callback_url VARCHAR;
+ALTER TABLE jobs ADD COLUMN auth_token VARCHAR;
