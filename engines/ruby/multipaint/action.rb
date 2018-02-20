@@ -11,12 +11,18 @@ module Multipaint
     end
   end
 
+  VALID_DIRECTIONS = [
+    [-1, -1], [-1, 0], [-1, 1],
+    [ 0, -1],          [ 0, 1],
+    [ 1, -1], [ 1, 0], [ 1, 1],
+  ].freeze
+
   class Shoot < Action
     attr_reader :direction
     def initialize direction
       @direction = direction
 
-      raise unless @direction.abs == 1
+      raise unless VALID_DIRECTIONS.include?(@direction.values)
     end
 
     def shoot?
@@ -33,7 +39,7 @@ module Multipaint
     def initialize direction
       @direction = direction
 
-      raise unless @direction.abs == 1
+      raise unless VALID_DIRECTIONS.include?(@direction.values)
     end
 
     def walk?
