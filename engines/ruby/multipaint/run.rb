@@ -10,7 +10,9 @@ module Multipaint
     $stdout.puts JSON.dump(ready: true)
 
     loop do
-      $stdout.puts JSON.generate(player.next_move(JSON.parse($stdin.readline)))
+      msg = JSON.parse($stdin.readline)
+
+      $stdout.puts JSON.generate({ turns_left: msg["turns_left"] }.merge(player.next_move(msg)))
     end
   end
 end

@@ -135,3 +135,14 @@ timeouts are as follows:
 
 - ready message: 5 seconds; this includes program boot time, if applicable
 - next move message: 0.5 seconds
+
+
+## SDK
+
+To allow participants to focus on the bot implementation instead of API
+details, we provide helper methods (SDKs) for the supported languages. In the
+`sample_bots/` directory there are bot implementation examples using these
+SDKs.
+
+You may decide to ignore these SDKs and implement them yourself, at your own
+peril. If you do, beware of I/O buffering.
