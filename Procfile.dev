@@ -1,2 +1,2 @@
-worker: bundle exec ruby -Iapp run.rb
-web: bundle exec ruby -Iapp web.rb
+worker: ruby -I app -I engines/ruby app/run.rb
+web: PORT=4567 ruby -I app -I engines/ruby app/web.rb

@@ -26,7 +26,7 @@ module Tasks
         [
           builders.include?(params["sdk"]),
           /\A[\w-]+\z/.match?(params["program_id"]),
-          /\A.+\z/.match?(params["source_code"]),
+          /\A.+\z/m.match?(params["source_code"]),
         ].all?
       end
     end

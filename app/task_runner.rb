@@ -54,7 +54,10 @@ class TaskRunner < Struct.new(:database, :worker_id)
           status: updated_job[:status],
           result: updated_job[:result],
         ),
-        updated_job[:auth_token]&.yield_self { |token| { Authorization: "Bearer #{token}" } },
+        {
+          "Content-Type" => "application/json",
+          "Authorization" => updated_job[:auth_token]&.yield_self { |token| "Bearer #{token}" },
+        }.compact
       )
   end
 
