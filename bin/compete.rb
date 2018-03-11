@@ -1,17 +1,17 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH << "engines/ruby"
+$LOAD_PATH << "lib"
 
-require "multipaint/stepper"
-require "multipaint/players/spawn"
-require "multipaint/players/timeout"
-require "multipaint/game_state_serializer"
+require "stepper"
+require "players/spawn"
+require "players/timeout"
+require "multipaint_engine/game_state_serializer"
 
-game_state = Multipaint::GameStateSerializer.load(JSON.parse(File.read(ARGV[0])))
+game_state = MultipaintEngine::GameStateSerializer.load(JSON.parse(File.read(ARGV[0])))
 
 players = [
-  Multipaint::Players::Timeout.new(Multipaint::Players::Spawn.new("alice", ["ruby", "-Iengines/ruby", ARGV[1]])),
-  Multipaint::Players::Timeout.new(Multipaint::Players::Spawn.new("bob", ["ruby", "-Iengines/ruby", ARGV[2]])),
+  Players::Timeout.new(Players::Spawn.new("alice", ["ruby", "-Isdks/ruby", ARGV[1]])),
+  Players::Timeout.new(Players::Spawn.new("bob", ["ruby", "-Isdks/ruby", ARGV[2]])),
 ]
 
 def esc_color fg=8, bg=8
@@ -36,7 +36,7 @@ def color_print state
 
   puts(state.height.times.map do |y|
     state.width.times.map do |x|
-      position = Multipaint::Position.new(y, x)
+      position = MultipaintEngine::Position.new(y, x)
 
       color = key.index(state.colors[position])
       avatar = state.player_positions.invert[position]
@@ -50,7 +50,7 @@ def color_print state
   end.join("\n"))
 end
 
-Multipaint::Stepper
+Stepper
   .new(game_state, players)
   .play_out
   .each { |state| color_print(state) }

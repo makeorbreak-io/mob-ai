@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/makeorbreak-io/mob-ai-engine-ruby.git
+  revision: 126b745bf6d4c2d8aa49dbbf00fc935646988b19
+  specs:
+    multipaint-engine (0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -25,6 +31,7 @@ PLATFORMS
 DEPENDENCIES
   foreman
   minitest
+  multipaint-engine!
   parallel
   pg
   sequel

@@ -1,0 +1,12 @@
+[submodule "sdks/ruby"]
+	path = sdks/ruby
+	url = git@github.com:makeorbreak-io/mob-ai-ruby.git
+[submodule "sdks/python"]
+	path = sdks/python
+	url = git@github.com:makeorbreak-io/mob-ai-python.git
+[submodule "sdks/nodejs"]
+	path = sdks/nodejs
+	url = git@github.com:makeorbreak-io/mob-ai-nodejs.git
+[submodule "sdks/bash"]
+	path = sdks/bash
+	url = git@github.com:makeorbreak-io/mob-ai-bash.git
