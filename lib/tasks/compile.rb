@@ -11,8 +11,8 @@ module Tasks
         File.write(File.join(tmpdir, "source_code"), source_code)
 
         Dir.chdir(tmpdir) do
-          `docker build . -f Dockerfile.builder -t mob-ai-#{sdk}`
-          `docker build . -f Dockerfile.base -t robot-#{program_id} --network none`
+          `docker build . -f Dockerfile.base -t mob-ai-#{sdk}`
+          `docker build . -f Dockerfile.builder -t robot-#{program_id} --network none`
         end
 
         { "docker_image": "robot-#{program_id}" }
