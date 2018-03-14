@@ -10,8 +10,8 @@ require "multipaint_engine/game_state_serializer"
 game_state = MultipaintEngine::GameStateSerializer.load(JSON.parse(File.read(ARGV[0])))
 
 players = [
-  Players::Timeout.new(Players::Docker.new("alice")),
-  Players::Timeout.new(Players::Docker.new("bob")),
+  Players::Timeout.new(Players::Docker.new("alice", show_stderr: true)),
+  Players::Timeout.new(Players::Docker.new("bob", show_stderr: true)),
 ]
 
 def esc_color fg=8, bg=8

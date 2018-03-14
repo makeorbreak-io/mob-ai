@@ -4,10 +4,11 @@ module Players
   class Docker
     attr_reader :player_id
 
-    def initialize player_id
+    def initialize player_id, show_stderr: false
       @spawn = Spawn.new(
         player_id,
         %W[docker run -i --rm --network none robot-#{player_id}:latest],
+        show_stderr,
       )
     end
 
