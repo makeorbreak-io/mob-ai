@@ -7,8 +7,9 @@ module Tasks
       sdk, program_id, source_code = params.values_at("sdk", "program_id", "source_code")
 
       Dir.mktmpdir("robot-#{program_id}-") do |tmpdir|
+        bot_filename = File.read(File.join("sdks", sdk, ".mob-ai-filename")).strip
         FileUtils.cp_r(File.join("sdks", sdk, "."), File.join(tmpdir))
-        File.write(File.join(tmpdir, "source_code"), source_code)
+        File.write(File.join(tmpdir, bot_filename), source_code)
 
         Dir.chdir(tmpdir) do
           `docker build . -f Dockerfile.base -t mob-ai-#{sdk}`
