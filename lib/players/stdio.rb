@@ -21,8 +21,6 @@ module Players
       loop do
         action = JSON.parse(input.readline)
 
-        $stderr.puts player_id, action
-
         if action.fetch("turns_left") == state.turns_left
           return MultipaintEngine::PlayerAction.new(
             player_id,

@@ -37,7 +37,7 @@ class TaskRunner < Struct.new(:database, :worker_id)
 
       update_job(job, status: "processed", result: JSON.generate(result))
     rescue => e
-      puts e
+      $stderr.puts e, e.backtrace
       update_job(job, status: "error", result: e.to_json)
     end
   end

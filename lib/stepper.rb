@@ -13,7 +13,6 @@ class Stepper < Struct.new(:game_state, :players)
       player.start
       nil
     rescue => e
-      $stderr.puts e, e.backtrace
       player
     end.compact
 
@@ -40,7 +39,6 @@ class Stepper < Struct.new(:game_state, :players)
     Parallel.map(players, in_threads: 0) do |player|
       player.next_move(game_state)
     rescue => e
-      $stderr.puts e, e.backtrace
       nil
     end.compact
   end

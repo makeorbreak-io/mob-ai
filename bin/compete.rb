@@ -54,5 +54,3 @@ Stepper
   .new(game_state, players)
   .play_out
   .each { |state| color_print(state) }
-  #.each { |state| puts Multipaint::GameStateSerializer.dump(state) }
-
