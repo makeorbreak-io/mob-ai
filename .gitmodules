@@ -10,3 +10,6 @@
 [submodule "sdks/bash"]
 	path = sdks/bash
 	url = https://github.com/makeorbreak-io/mob-ai-bash.git
+[submodule "sdks/java"]
+	path = sdks/java
+	url = git@github.com:makeorbreak-io/mob-ai-java.git
