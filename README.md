@@ -17,7 +17,7 @@ limited to submitting one file for now, so please be aware of that.
 
 After editing the bot file, build its docker image:
 
-```bash
+```shell
 BOT_NAME=alice make
 BOT_NAME=bob make
 ```
@@ -29,7 +29,7 @@ installing dependencies (it requires ruby 2.5.0, whose installation
 instructions are not covered here, but I'd suggest looking into
 [asdf](https://github.com/asdf-vm/asdf)):
 
-```bash
+```shell
 git clone https://github.com/makeorbreak-io/mob-ai
 cd mob-ai/
 bundle install
@@ -37,15 +37,16 @@ bundle install
 
 If everything went OK, you should be able to run the game by executing the following command:
 
-```bash
+```shell
 bundle exec bin/compete.rb boards/10x10.json
 ```
 
 
 # Logging
 
-You *cannot* print things to `stdout` or read things from `stdin`, as those are
-the streams we're using for server-bot communication.
+You **MUST NOT** print things to `stdout` or read things from `stdin`, as those
+are the streams we're using for server-bot communication. Doing so will ruin
+your bot.
 
 Please use `stderr` to log things. Examples:
 
