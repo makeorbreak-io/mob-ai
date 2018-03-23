@@ -1,10 +1,11 @@
 source "https://rubygems.org"
 
-gem "sinatra"
-gem "parallel"
-gem "sequel"
-gem "pg"
-gem "foreman"
-gem "minitest"
+group :webserver do
+  gem "sinatra"
+  gem "sequel"
+  gem "pg"
+  gem "foreman"
+end
 
+gem "parallel"
 gem "multipaint-engine", git: "https://github.com/makeorbreak-io/mob-ai-engine-ruby.git"

@@ -9,7 +9,6 @@ GEM
   specs:
     foreman (0.84.0)
       thor (~> 0.19.1)
-    minitest (5.11.3)
     mustermann (1.0.2)
     parallel (1.12.1)
     pg (1.0.0)
@@ -30,7 +29,6 @@ PLATFORMS
 
 DEPENDENCIES
   foreman
-  minitest
   multipaint-engine!
   parallel
   pg
