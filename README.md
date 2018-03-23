@@ -10,7 +10,7 @@ The first step is to pick your language. Start by cloning one of the following r
 * [mob-ai-python](https://github.com/makeorbreak-io/mob-ai-python)
 * [mob-ai-nodejs](https://github.com/makeorbreak-io/mob-ai-nodejs)
 * [mob-ai-bash](https://github.com/makeorbreak-io/mob-ai-bash)
-* [mob-ai-java](https://github.com/makeorbreak-io/mob-ai-java) (not available in production yet)
+* [mob-ai-java](https://github.com/makeorbreak-io/mob-ai-java)
 
 Each repository has a `bot.*` file, which you can use to start working. We're
 limited to submitting one file for now, so please be aware of that.
