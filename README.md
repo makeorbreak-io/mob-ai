@@ -25,20 +25,18 @@ BOT_NAME=bob make
 This will create two docker images, `robot-alice` and `robot-bob`.
 
 To run a game between these two bots, start by cloning this repository and
-installing dependencies (it requires ruby 2.5.0, whose installation
-instructions are not covered here, but I'd suggest looking into
-[asdf](https://github.com/asdf-vm/asdf)):
+compiling the docker image:
 
 ```shell
 git clone https://github.com/makeorbreak-io/mob-ai
 cd mob-ai/
-bundle install
+make
 ```
 
 If everything went OK, you should be able to run the game by executing the following command:
 
 ```shell
-bundle exec bin/compete.rb boards/10x10.json
+bin/compete.sh
 ```
 
 
