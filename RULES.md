@@ -94,7 +94,7 @@ strippedof whitespace.
 {
   "width":3,
   "height":2,
-  "player_positions:{
+  "player_positions":{
     "alice":[0,0],
     "bob":[1,1]
   },
