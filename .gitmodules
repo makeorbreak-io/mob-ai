@@ -13,3 +13,6 @@
 [submodule "sdks/java"]
 	path = sdks/java
 	url = https://github.com/makeorbreak-io/mob-ai-java.git
+[submodule "sdks/csharp"]
+	path = sdks/csharp
+	url = https://github.com/makeorbreak-io/mob-ai-csharp.git
