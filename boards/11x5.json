@@ -1,0 +1,17 @@
+{
+  "colors":[
+    [null,null,null,null,null,null,null,null,null,null,null],
+    [null,"alice","alice",null,null,null,null,null,null,null,null],
+    [null,"alice","alice","alice",null,null,null,"bob","bob","bob",null],
+    [null,null,null,null,null,null,null,null,"bob","bob",null],
+    [null,null,null,null,null,null,null,null,null,null,null]
+  ],
+  "height":5,
+  "player_positions":{
+    "alice":[2,3],
+    "bob":[2,7]
+  },
+  "previous_actions":[],
+  "turns_left":110,
+  "width":11
+}
